@@ -1,7 +1,9 @@
-import Login from "../Pages/Login";
+import LoginForm from "../src/Pages/LoginForm";
 function App() {
 
-  return<Login />
+  return(
+  <LoginForm/>
+);
 
 }
 export default App
