@@ -1,120 +1,174 @@
-import { useState, type SubmitEvent } from 'react'
-import '../styles/Register.css'
+
+import { useState, type ChangeEvent, type FormEvent } from 'react'
+import {
+  Box,
+  Button,
+  Container,
+  Paper,
+  Stack,
+  TextField,
+  Typography,
+  Link,
+} from '@mui/material'
+import { Link as RouterLink } from 'react-router-dom'
 
 function Register() {
+  const [formData, setFormData] = useState({
+    fullName: '',
+    email: '',
+    phone: '',
+    city: '',
+    password: '',
+    confirmPassword: '',
+  })
 
-  // Store the values entered by the user
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [phone, setPhone] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const [role, setRole] = useState('Donor')
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [event.target.name]: event.target.value,
+    })
+  }
 
-  // Handle form submission
-  const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
+ const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-
-    if (password !== confirmPassword) {
-      alert('Passwords do not match!')
-      return
-    }
-
-    alert('Registration form submitted successfully!')
+    console.log('Registration details:', {
+      ...formData,
+      role: 'user',
+    })
   }
 
   return (
-    <div className="register-container">
+    <Box
+      sx={{
+        minHeight: '100vh',
+        backgroundColor: '#f1f7f6',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        py: 5,
+      }}
+    >
+      <Container maxWidth="sm">
+        <Paper
+          elevation={3}
+          sx={{
+            p: { xs: 3, sm: 5 },
+            borderRadius: 4,
+          }}
+        >
+          <Stack spacing={2}>
+           <Typography
+          variant="h4"
+         sx={{
+         fontWeight: 'bold',
+         textAlign: 'center',
+        color: '#173b45',
+          }}
+>
+  Create Your Account
+</Typography>
 
-      <div className="register-card">
+            <Typography sx={{ textAlign:'center', color:'text.secondary' }}>
+              Join MedShare and help make medicines accessible.
+            </Typography>
 
-        <h1>Create Your Account</h1>
-        <p className="register-subtitle">
-          Join MedShare and make a difference.
-        </p>
+            <Box component="form" onSubmit={handleSubmit}>
+              <Stack spacing={2}>
+                <TextField
+                  label="Full Name"
+                  name="fullName"
+                  value={formData.fullName}
+                  onChange={handleChange}
+                  required
+                  fullWidth
+                />
 
-        <form onSubmit={handleSubmit}>
+                <TextField
+                  label="Email Address"
+                  name="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                  fullWidth
+                />
 
-          <div className="form-group">
-            <label>Full Name</label>
-            <input
-              type="text"
-              placeholder="Enter your full name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-          </div>
+                <TextField
+                  label="Phone Number"
+                  name="phone"
+                  type="tel"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  required
+                  fullWidth
+                />
 
-          <div className="form-group">
-            <label>Email Address</label>
-            <input
-              type="email"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
+                <TextField
+                  label="City"
+                  name="city"
+                  value={formData.city}
+                  onChange={handleChange}
+                  required
+                  fullWidth
+                />
 
-          <div className="form-group">
-            <label>Phone Number (Optional)</label>
-            <input
-              type="tel"
-              placeholder="Enter your phone number"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-            />
-          </div>
+                <TextField
+                  label="Password"
+                  name="password"
+                  type="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                  fullWidth
+                />
 
-          <div className="form-group">
-            <label>Password</label>
-            <input
-              type="password"
-              placeholder="Create a password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
+                <TextField
+                  label="Confirm Password"
+                  name="confirmPassword"
+                  type="password"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  required
+                  fullWidth
+                />
 
-          <div className="form-group">
-            <label>Confirm Password</label>
-            <input
-              type="password"
-              placeholder="Re-enter your password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-            />
-          </div>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  fullWidth
+                  sx={{
+                    py: 1.5,
+                    backgroundColor: '#26766e',
+                    borderRadius: 2,
+                    textTransform: 'none',
+                    fontSize: '16px',
+                    '&:hover': {
+                      backgroundColor: '#173b45',
+                    },
+                  }}
+                >
+                  Create Account
+                </Button>
+              </Stack>
+            </Box>
 
-          <div className="form-group">
-            <label>Register As</label>
+            <Typography sx={{ textAlign: 'center', color: 'text.secondary' }}>
+              Already have an account?{' '}
+              <Link component={RouterLink} to="/login" underline="hover">
+                Login
+              </Link>
+            </Typography>
 
-            <select
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
-            >
-              <option value="Donor">Donor</option>
-              <option value="Recipient">Recipient</option>
-              <option value="Admin">Admin</option>
-            </select>
-          </div>
-
-          <button type="submit" className="register-button">
-            Create Account
-          </button>
-
-        </form>
-
-        <p className="login-link">
-          Already have an account? <a href="/login">Login</a>
-        </p>
-
-      </div>
-
-    </div>
+            <Typography sx={{ textAlign: 'center' }}>
+              Registering as an Organization?{' '}
+              <Link component={RouterLink} to="/register-ngo" underline="hover">
+                Organization Registration
+              </Link>
+            </Typography>
+          </Stack>
+        </Paper>
+      </Container>
+    </Box>
   )
 }
 
